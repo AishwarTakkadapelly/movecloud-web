@@ -14,18 +14,30 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: '16'
+    
+    - name: Cache Node.js modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          !~/.npm/_logs
+          node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+          ${{ runner.os }}-
 
     - name: Install dependencies
       run: npm install
 
     - name: Run tests
-      run: npm test -- --watchAll=false --passWithNoTests
+      run: npx react-scripts test --watchAll=false --passWithNoTests
 
     - name: Build project
       run: npm run build
@@ -41,3 +53,5 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/movecloud-web:latest
+
+      
