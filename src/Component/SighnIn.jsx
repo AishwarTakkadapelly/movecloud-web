@@ -11,7 +11,6 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,11 +31,12 @@ const SignIn = () => {
       }
     })
       .then(response => {
-        setData(response.data);
+        // Handle successful response
         setLoading(false);
         window.location.href = 'http://localhost:9000/';
       })
       .catch(error => {
+        // Handle error response
         setError(error);
         setLoading(false);
       });
@@ -111,4 +111,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
