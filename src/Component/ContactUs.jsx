@@ -17,27 +17,26 @@ const ContactUs = () => {
     });
   };
 
-  // makeApiCall('/resource',Method,body,)
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch('/api/contact', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(formData)
-  //     });
-  //     const result = await response.json();
-  //     if (result.success) {
-  //       setResponseMessage('Your message has been sent successfully!');
-  //     } else {
-  //       setResponseMessage('Failed to send your message. Please try again later.');
-  //     }
-  //   } catch (error) {
-  //     setResponseMessage('An error occurred. Please try again later.');
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      const result = await response.json();
+      if (result.success) {
+        setResponseMessage('Your message has been sent successfully!');
+      } else {
+        setResponseMessage('Failed to send your message. Please try again later.');
+      }
+    } catch (error) {
+      setResponseMessage('An error occurred. Please try again later.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4">
@@ -46,7 +45,7 @@ const ContactUs = () => {
         <p className="text-lg text-gray-700 mb-6 text-center">
           We'd love to hear from you! Please fill out the form below to get in touch with us.
         </p>
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Name</label>
             <input

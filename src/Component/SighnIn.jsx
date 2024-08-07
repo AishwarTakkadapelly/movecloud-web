@@ -5,12 +5,13 @@ import axios from 'axios';
 const SignIn = () => {
   const [formData, setFormData] = useState({
     username: '',
-    password: ''
+    password: '',
+    rememberMe: false,
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null); // Add this line to store response data if needed
+  const [data, setData] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -21,23 +22,18 @@ const SignIn = () => {
     });
   };
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      'Host': 'localhost:9001'
-    }
-  };
-
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-    setLoading(true); // Set loading state to true
+    e.preventDefault();
+    setLoading(true);
 
-    // Make the Axios request
-    axios.post(`${process.env.MOVE_CLOUD_LOCAL_HOST_BACK_END}/signin`, formData)
-      .then(response => { 
+    axios.post(`${process.env.MOVE_CLOUD_LOCAL_HOST_BACK_END}/signin`, formData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
         setData(response.data);
         setLoading(false);
-        // Redirect to the different application
         window.location.href = 'http://localhost:9000/';
       })
       .catch(error => {
@@ -53,7 +49,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2" htmlFor="username">
-            username
+              Username
             </label>
             <input
               type="text"
@@ -101,8 +97,8 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
-        {loading && <div>Loading...</div>}
-        {error && <div>Error: {error.message}</div>}
+        {loading && <div className="mt-4 text-center">Loading...</div>}
+        {error && <div className="mt-4 text-center text-red-500">Error: {error.message}</div>}
         <p className="mt-4 text-center text-gray-600">
           Don't have an account?{' '}
           <Link to="/signup" className="text-blue-500 hover:text-blue-700">
@@ -115,3 +111,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
