@@ -34,10 +34,12 @@ jobs:
           ${{ runner.os }}-
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci # Using npm ci for consistent and clean installs
 
     - name: Run tests
       run: npx react-scripts test --watchAll=false --passWithNoTests
+      env:
+        CI: true # Ensure tests run in CI mode
 
     - name: Build project
       run: npm run build
@@ -53,5 +55,3 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/movecloud-web:latest
-
-      
