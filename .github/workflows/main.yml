@@ -14,32 +14,21 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v2
       with:
-        node-version: '18'
-
-    - name: Cache Node.js modules
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.npm
-          !~/.npm/_logs
-          node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-          ${{ runner.os }}-
+        node-version: '16'
 
     - name: Install dependencies
-      run: npm install # Use npm install to update package-lock.json
+      run: npm install
+
+    - name: Fix permissions for react-scripts
+      run: chmod +x node_modules/.bin/react-scripts
 
     - name: Run tests
-      run: npx react-scripts test --watchAll=false --passWithNoTests
-      env:
-        CI: true # Ensure tests run in CI mode
+      run: npm test -- --watchAll=false --passWithNoTests
 
     - name: Build project
       run: npm run build
